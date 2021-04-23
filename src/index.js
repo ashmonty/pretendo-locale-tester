@@ -2,8 +2,6 @@ const logger = require('./logger');
 const express = require('express');
 const handlebars = require('express-handlebars');
 
-const cfg = require('../config.json');
-
 const app = express();
 
 const routers = {
