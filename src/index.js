@@ -2,6 +2,8 @@ const logger = require('./logger');
 const express = require('express');
 const handlebars = require('express-handlebars');
 
+const cfg = require('../config.json');
+
 const app = express();
 
 const routers = {
@@ -45,13 +47,13 @@ app.engine('handlebars', handlebars({
 		},
 		customCheckbox(type) {
 			switch(type) {
-				case 'completed':
+				case 'done':
 					return `
 						<div class="custom-checkbox done">
 							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check"><polyline points="20 6 9 17 4 12"></polyline></svg>
 						</div>
 					`;
-				case 'started':
+				case 'ongoing':
 					return `
 						<div class="custom-checkbox ongoing">
 							<div class="small-dot"></div>
