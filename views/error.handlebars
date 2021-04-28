@@ -1,0 +1,53 @@
+<div class="wrapper">
+
+	{{> header}}
+
+	<section class="hero">
+		<div class="hero-meta">
+			<h1 class="title dot">Something went wrong</h1>
+			<p class="text">
+				<b>Error message:</b><br>{{error}}<br><br>If the solutions below don't work, ask for help in the
+				Pretendo Network Discord server, and while you're at it, ping @Monty#3581 and tell them they're an idiot for making spaghetti code.
+			</p>
+		</div>
+		<div class="misc">
+			<div class="purple-circle"></div>
+		</div>
+	</section>
+
+	<section class="faq">
+		<div class="sect-top sect">
+			<h2 class="dot title" id="faq" {{#if locale.faq.titleSuffix}}data-title-suffix="{{locale.faq.titleSuffix}}"
+				{{/if}}>Possible fixes</h2>
+			<p class="text">Here's what might have happened:</p>
+		</div>
+		<div class="questions column-2">
+			<details class="question-and-answer">
+				<summary>
+					Not a direct URL.
+				</summary>
+				<p class="text">Make sure the JSON file you linked to is publicly accessible, and that you used a direct
+					link (e.g. <a
+						href="https://raw.githubusercontent.com/PretendoNetwork/website/dev/locales/IT_it.json">https://raw.githubusercontent.com/PretendoNetwork/website/dev/locales/IT_it.json</a>,
+					not <a
+						href="https://github.com/PretendoNetwork/website/blob/dev/locales/IT_it.json">https://github.com/PretendoNetwork/website/blob/dev/locales/IT_it.json</a>).<br>This
+					means that you can't link to a file on your computer (C://Users/.../WX_yz.json)</p>
+			</details>
+			<details class="question-and-answer">
+				<summary>
+					Outdated file.
+				</summary>
+				<p class="text">Make sure you're localizing <a
+						href="https://github.com/PretendoNetwork/website/blob/dev/locales/US_en.json">this</a> file, as
+					the file in the master branch is outdated.</p>
+			</details>
+		</div>
+		{{!-- Tmp! --}}
+		<script>document.querySelector("details").setAttribute("open", true)</script>
+	</section>
+
+
+
+	{{> footer }}
+
+</div>

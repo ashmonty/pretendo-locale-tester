@@ -10,26 +10,42 @@ router.get('/', (req, res) => {
 
 	if (req.query.url) {
 
-		fetch(req.query.url)
+
+		let url = req.query.url
+
+		if (!url.startsWith('http')) {
+			url = `https://${url}`
+		}
+
+		fetch(url)
 			.then((response) => {
 				return response.json()
 			})
 			.then((data) => {
 				let tmpLocale = data;
-				res.render('progress', {
+				res.render('home', {
 					layout: 'main',
 					locale: tmpLocale,
-					progressLists,
-					queryUrl: req.query.url
+					featuredFeatureList: progressLists[0],
+					queryUrl: url
 				});
 			})
-	} else {
+			.catch((error) => {
+				let tmpLocale = getLocale('US', 'en')
+				res.render('error', {
+					layout: 'main',
+					locale: tmpLocale,
+					featuredFeatureList: progressLists[0],
+					error
+				})
+			})
+	}
+	else {
 		let tmpLocale = getLocale('US', 'en')
-		res.render('progress', {
+		res.render('home', {
 			layout: 'main',
 			locale: tmpLocale,
-			progressLists,
-			queryUrl: req.query.url
+			featuredFeatureList: progressLists[0]
 		});
 	}
 });
