@@ -1,1 +1,1 @@
-# pretendo-webiste-private
+# pretendo-locale-tester
