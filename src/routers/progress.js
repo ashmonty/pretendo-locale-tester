@@ -23,10 +23,10 @@ router.get('/', (req, res) => {
 			})
 			.then((data) => {
 				let tmpLocale = data;
-				res.render('home', {
+				res.render('progress', {
 					layout: 'main',
 					locale: tmpLocale,
-					featuredFeatureList: progressLists[0],
+					progressLists,
 					queryUrl: url
 				});
 			})
@@ -35,17 +35,17 @@ router.get('/', (req, res) => {
 				res.render('error', {
 					layout: 'main',
 					locale: tmpLocale,
-					featuredFeatureList: progressLists[0],
+					progressLists,
 					error
 				})
 			})
 	}
 	else {
 		let tmpLocale = getLocale('US', 'en')
-		res.render('home', {
+		res.render('progress', {
 			layout: 'main',
 			locale: tmpLocale,
-			featuredFeatureList: progressLists[0]
+			progressLists
 		});
 	}
 });
