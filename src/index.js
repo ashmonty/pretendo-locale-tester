@@ -67,6 +67,6 @@ app.set('view engine', 'handlebars');
 
 app.use(express.static('public'));
 
-app.listen(process.env.PORT, () => {
-	logger.info(`Server listening on *:${process.env.PORT}`);
+app.listen(process.env.PORT || 8080, () => {
+	logger.info(`Server listening on *:${process.env.PORT || 8080}`);
 });

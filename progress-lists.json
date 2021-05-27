@@ -1,65 +1,65 @@
 [
 	{
-		"title": "Juxtaposition",
+		"title": "You can't localize any of this",
 		"features": [
 			{
-				"name": "Fix fonts", 
+				"name": "This is a feature", 
 				"status": "done"
 			},
 			{
-				"name": "Guest Mode", 
+				"name": "This is another feature", 
 				"status": "done"
 			},
 			{
-				"name": "Communities Page", 
+				"name": "And another", 
 				"status": "done"
 			},
 			{
-				"name": "Set-Up Page", 
+				"name": "And another", 
 				"status": "done"
 			},
 			{
-				"name": "Posts", 
+				"name": "And another", 
 				"status": "ongoing"
 			},
 			{
-				"name": "User Page", 
+				"name": "And another", 
 				"status": "ongoing"
 			},
 			{
-				"name": "Community Page", 
+				"name": "And another", 
 				"status": "ongoing"
 			},
 			{
-				"name": "Notifications", 
+				"name": "And another", 
 				"status": "ongoing"
 			},
 			{
-				"name": "Miiverse Patch (applet)", 
+				"name": "And another", 
 				"status": "ongoing"
 			},
 			{
-				"name": "Replies", 
+				"name": "And another", 
 				"status": "ongoing"
 			},
 			{
-				"name": "Activity Feed", 
+				"name": "And another", 
 				"status": "todo"
 			},
 			{
-				"name": "Fix browser History", 
+				"name": "And another", 
 				"status": "todo"
 			},
 			{
-				"name": "Google Analytics(?)", 
+				"name": "And another", 
 				"status": "todo"
 			},
 			{
-				"name": "Sub Communities", 
+				"name": "And another", 
 				"status": "todo"
 			},
 			{
-				"name": "Miiverse Patch (games)", 
+				"name": "And another", 
 				"status": "todo"
 			}
 		]
