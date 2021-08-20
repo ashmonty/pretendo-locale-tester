@@ -2,4 +2,4 @@
 
 A website to test your localization for PretendoNetwork/website.
 
-Just visit https://localization.pretendo.tk
+Just visit https://pnl.montylion.dev
