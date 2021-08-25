@@ -30,34 +30,9 @@ app.use(cookieParser())
 
 // Locale express middleware setup
 app.use(expressLocale({
-	"priority": ['cookie', 'accept-language', 'map', 'default'],
-	cookie: {name: 'preferredLocale'},
-
-	// Map unavailable regions to available locales from the same language
-	map: {
-		/* TODO: map more regions to the available locales */
-		en: 'en-US', 'en-GB': 'en-US', 'en-AU': 'en-US', 'en-CA': 'en-US',
-		ar: 'ar-AR',
-		es: 'es-ES',
-		fr: 'fr-FR', 'fr-CA': 'fr-FR', 'fr-CH': 'fr-FR',
-		it: 'it-IT', 'it-CH': 'it-IT',
-		ru: 'ru-RU',
-		tr: 'tr-TR'
-	},
-	allowed: [
-		'en', 'en-US', 'en-GB', 'en-AU', 'en-CA',
-		'ar', 'ar-AR',
-		'es', 'es-ES',
-		'fr', 'fr-FR', 'fr-CA', 'fr-CH',
-		'it', 'it-IT', 'it-CH',
-		'ru', 'ru-RU',
-		'tr', 'tr-TR',
-	],
+	"priority": ['default'],
 	"default": "en-US"
 }))
-
-
-
 
 app.use('/', routers.home);
 app.use('/faq', routers.faq);
