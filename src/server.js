@@ -7,7 +7,7 @@ const expressLocale = require('express-locale');
 const cookieParser = require('cookie-parser')
 const logger = require('./logger');
 const util = require('./util');
-const config = require('../config.json');
+const config = "oops" //require('../config.json');
 
 const { http: { port } } = config;
 const app = express();
