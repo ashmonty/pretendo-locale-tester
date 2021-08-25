@@ -79,6 +79,6 @@ app.engine('handlebars', handlebars({
 app.set('view engine', 'handlebars');
 
 logger.info('Starting server')
-app.listen(port, () => {
-	logger.success(`Server listening on *:${port}`);
+app.listen(process.env.PORT || port, () => {
+	logger.success(`Server listening on *:${process.env.PORT || port}`);
 });
