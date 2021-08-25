@@ -1,12 +1,11 @@
 const Trello =require("trello")
 const Redis = require('ioredis');
 const JSONCache = require('redis-json');
-const config = require('../config.json');
 
-const trelloKey = config.trello.api_key || process.env.TRELLOKEY
-const trelloToken = config.trello.api_token || process.env.TRELLOTOKEN
+const trelloKey = process.env.TRELLOKEY
+const trelloToken = process.env.TRELLOTOKEN
 
-const trello = new Trello(config.trello.api_key, config.trello.api_token);
+const trello = new Trello(trelloKey, trelloToken);
 const redis = new Redis(process.env.REDIS_URL);
 const trelloCache = new JSONCache(redis, { prefix: 'trello:' });
 

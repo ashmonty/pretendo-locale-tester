@@ -7,9 +7,7 @@ const expressLocale = require('express-locale');
 const cookieParser = require('cookie-parser')
 const logger = require('./logger');
 const util = require('./util');
-const config = "oops" //require('../config.json');
 
-const { http: { port } } = config;
 const app = express();
 
 logger.info('Setting up Middleware');
@@ -79,6 +77,6 @@ app.engine('handlebars', handlebars({
 app.set('view engine', 'handlebars');
 
 logger.info('Starting server')
-app.listen(process.env.PORT || port, () => {
-	logger.success(`Server listening on *:${process.env.PORT || port}`);
+app.listen(process.env.PORT, () => {
+	logger.success(`Server listening on *:${process.env.PORT}`);
 });
