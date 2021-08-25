@@ -29,7 +29,7 @@ async function updateTrelloCache() {
 		sections: []
 	};
 
-	const boards = await trello.getOrgBoards(config.trello.board_name);
+	const boards = await trello.getOrgBoards(config.trello.board_name || "pretendo1");
 
 	for (const board of boards) {
 		const meta = {
