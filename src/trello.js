@@ -28,7 +28,7 @@ async function updateTrelloCache() {
 		sections: []
 	};
 
-	const boards = await trello.getOrgBoards(config.trello.board_name || "pretendo1");
+	const boards = await trello.getOrgBoards("pretendo1");
 
 	for (const board of boards) {
 		const meta = {
