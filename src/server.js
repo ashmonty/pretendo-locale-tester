@@ -8,7 +8,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('./logger');
 const util = require('./util');
 
-const port = process.env.PORT
+const port = process.env.PORT || 8080
 
 const app = express();
 

@@ -1,9 +1,17 @@
-const Trello =require('trello');
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
+const Trello = require('trello');
 const Redis = require('ioredis');
 const JSONCache = require('redis-json');
+let config;
+try {
+	config = require('../config.json');
+} catch (err) {
+	console.log('no config.json, whoops');
+}
 
-const trelloKey = process.env.TRELLOKEY
-const trelloToken = process.env.TRELLOTOKEN
+const trelloKey = process.env.TRELLOKEY || config.trello.api_key;
+const trelloToken = process.env.TRELLOTOKEN || config.trello.api_token;
 
 const trello = new Trello(trelloKey, trelloToken);
 const redis = new Redis(process.env.REDIS_URL);
@@ -15,7 +23,7 @@ async function getTrelloCache() {
 		cache = await updateTrelloCache();
 	}
 
-	if (cache.update_time < Date.now() - (1000 * 60 * 60)) {
+	if (cache.update_time < Date.now() - 1000 * 60 * 60) {
 		cache = await updateTrelloCache();
 	}
 
@@ -25,10 +33,10 @@ async function getTrelloCache() {
 async function updateTrelloCache() {
 	const progressData = {
 		update_time: Date.now(),
-		sections: []
+		sections: [],
 	};
 
-	const boards = await trello.getOrgBoards("pretendo1");
+	const boards = await trello.getOrgBoards('pretendo1');
 
 	for (const board of boards) {
 		const meta = {
@@ -38,8 +46,8 @@ async function updateTrelloCache() {
 			progress: {
 				not_started: [],
 				started: [],
-				completed: []
-			}
+				completed: [],
+			},
 		};
 
 		meta.title = board.name;
@@ -57,7 +65,11 @@ async function updateTrelloCache() {
 			}
 		}
 
-		if (meta.progress.not_started.length !== 0 || meta.progress.started.length !== 0 || meta.progress.completed.length !== 0) {
+		if (
+			meta.progress.not_started.length !== 0 ||
+      meta.progress.started.length !== 0 ||
+      meta.progress.completed.length !== 0
+		) {
 			progressData.sections.push(meta);
 		}
 	}
@@ -68,5 +80,5 @@ async function updateTrelloCache() {
 
 module.exports = {
 	getTrelloCache,
-	updateTrelloCache
+	updateTrelloCache,
 };
