@@ -4,9 +4,11 @@ const express = require('express');
 const handlebars = require('express-handlebars');
 const morgan = require('morgan');
 const expressLocale = require('express-locale');
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser');
 const logger = require('./logger');
 const util = require('./util');
+
+const port = process.env.PORT
 
 const app = express();
 
@@ -21,10 +23,11 @@ const routers = {
 	home: require('./routers/home'),
 	faq: require('./routers/faq'),
 	progress: require('./routers/progress'),
+	blog: require('./routers/blog'),
 	localization: require('./routers/localization')
 };
 
-app.use(cookieParser())
+app.use(cookieParser());
 
 // Locale express middleware setup
 app.use(expressLocale({
@@ -36,15 +39,15 @@ app.use('/', routers.home);
 app.use('/faq', routers.faq);
 app.use('/progress', routers.progress);
 app.use('/localization', routers.localization);
+app.use('/blog', routers.blog);
 
 logger.info('Creating 404 status handler');
 // This works because it is the last router created
 // Meaning the request could not find a valid router
-app.use((request, response) => {
+app.use((request, response, next) => {
 	const fullUrl = util.fullUrl(request);
 	logger.warn(`HTTP 404 at ${fullUrl}`);
-
-	response.sendStatus(404); // TODO: 404 page
+	next();
 });
 
 logger.info('Setting up handlebars engine');
@@ -53,11 +56,11 @@ app.engine('handlebars', handlebars({
 		doFaq(value, options) {
 			let htmlLeft = '';
 			let htmlRight = '';
-			for(const [i, v] of Object.entries(value)) {
+			for (const [i, v] of Object.entries(value)) {
 				const appendHtml = options.fn({
 					...v
 				}); // Tis is an HTML string
-				if(i % 2 === 0) {
+				if (i % 2 === 0) {
 					htmlLeft += appendHtml;
 				} else {
 					htmlRight += appendHtml;
@@ -76,7 +79,7 @@ app.engine('handlebars', handlebars({
 }));
 app.set('view engine', 'handlebars');
 
-logger.info('Starting server')
-app.listen(process.env.PORT, () => {
-	logger.success(`Server listening on *:${process.env.PORT}`);
+logger.info('Starting server');
+app.listen(port, () => {
+	logger.success(`Server listening on http://localhost:${port}`);
 });
