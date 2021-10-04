@@ -1,7 +1,11 @@
+/* eslint-disable no-const-assign */
+/* eslint-disable prefer-const */
 const { Router } = require('express');
 const util = require('../util');
 const logger = require('../logger');
 const router = new Router();
+
+const { fetchLocaleFile } = require('../fetchlocalefile');
 
 const fs = require('fs');
 const path = require('path');
@@ -38,7 +42,11 @@ const postList = () => {
 router.get('/', async (request, response) => {
 
 	const reqLocale = request.locale;
-	const locale = util.getLocale(reqLocale.region, reqLocale.language);
+	let locale = util.getLocale(reqLocale.region, reqLocale.language);
+
+	if (request.query.url) {
+		locale = await fetchLocaleFile(request.query.url);
+	}
 
 	const localeString = reqLocale.toString();
 
@@ -46,7 +54,8 @@ router.get('/', async (request, response) => {
 		layout: 'main',
 		locale,
 		localeString,
-		postList
+		postList,
+		queryUrl: request.query.url
 	});
 });
 
@@ -70,7 +79,11 @@ router.get('/feed.xml', async (request, response) => {
 router.get('/:slug', async (request, response, next) => {
 
 	const reqLocale = request.locale;
-	const locale = util.getLocale(reqLocale.region, reqLocale.language);
+	let locale = util.getLocale(reqLocale.region, reqLocale.language);
+
+	if (request.query.url) {
+		locale = await fetchLocaleFile(request.query.url);
+	}
 
 	const localeString = reqLocale.toString();
 
@@ -104,6 +117,7 @@ router.get('/:slug', async (request, response, next) => {
 		localeString,
 		postInfo,
 		htmlPost,
+		queryUrl: request.query.url
 	});
 });
 
