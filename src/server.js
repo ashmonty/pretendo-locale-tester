@@ -8,7 +8,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('./logger');
 const util = require('./util');
 
-const port = process.env.PORT || 8080
+const port = process.env.PORT || 8080;
 
 const app = express();
 
@@ -31,9 +31,9 @@ app.use(cookieParser());
 
 // Locale express middleware setup
 app.use(expressLocale({
-	"priority": ['default'],
-	"default": "en-US"
-}))
+	'priority': ['default'],
+	'default': 'en-US'
+}));
 
 app.use('/', routers.home);
 app.use('/faq', routers.faq);
