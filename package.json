@@ -22,7 +22,7 @@
   "dependencies": {
     "colors": "^1.4.0",
     "cookie-parser": "^1.4.5",
-    "discord-oauth2": "github:ryanblenis/discord-oauth2",
+    "discord-oauth2": "^2.8.0",
     "express": "^4.17.1",
     "express-handlebars": "^4.0.4",
     "express-locale": "^2.0.0",
