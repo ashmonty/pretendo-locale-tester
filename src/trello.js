@@ -1,13 +1,19 @@
-const Trello =require('trello');
+const Trello = require('trello');
 const got = require('got');
 const config = require('../config.json');
+
+const trello = new Trello(
+	process.env.TRELLOKEY || config.trello.api_key,
+	process.env.TRELLOTOKEN || config.trello.api_token
+);
+let cache;
 
 async function getTrelloCache() {
 	const available = await trelloAPIAvailable();
 	if (!available) {
 		return {
 			update_time: Date.now(),
-			sections: []
+			sections: [],
 		};
 	}
 
@@ -70,7 +76,9 @@ async function updateTrelloCache() {
 }
 
 async function trelloAPIAvailable() {
-	const { status } = await got('https://trello.status.atlassian.com/api/v2/status.json').json();
+	const { status } = await got(
+		'https://trello.status.atlassian.com/api/v2/status.json'
+	).json();
 	return status.description === 'All Systems Operational';
 }
 

@@ -7,9 +7,9 @@ const router = new Router();
 
 // Create OAuth client
 const discordOAuth = new DiscordOauth2({
-	clientId: config.discord.client_id,
-	clientSecret: config.discord.client_secret,
-	redirectUri: `${config.http.base_url}/account/connect/discord`,
+	clientId: process.env.DISCORDCLIENTID || config.discord.client_id,
+	clientSecret: process.env.DISCORDCLIENTSECRET || config.discord.client_secret,
+	redirectUri: process.env.BASEURL || `${config.http.base_url}/account/connect/discord`,
 	version: 'v9'
 });
 
@@ -152,15 +152,15 @@ router.get('/', async (request, response) => {
 		// Get the users Discord roles to check if they are a tester
 		const { roles } = await discordOAuth.getMemberRolesForGuild({
 			userId: account.connections.discord.id,
-			guildId: config.discord.guild_id,
-			botToken: config.discord.bot_token
+			guildId: process.env.DISCORDGUILDID || config.discord.guild_id,
+			botToken: process.env.DISCORDBOTTOKEN || config.discord.bot_token
 		});
 
 		// Only run this check if not already a tester (edge case)
 		if (!renderData.isTester) {
 			// 409116477212459008 = Developer
 			// 882247322933801030 = Super Mario (Patreon tier)
-			renderData.isTester = roles.some(role => config.discord.tester_roles.includes(role));
+			renderData.isTester = roles.some(role => (JSON.parse(process.env.DISCORDTESTERROLES) || config.discord.tester_roles).includes(role));
 		}
 	} else {
 		// If no Discord account linked, generate an auth URL
