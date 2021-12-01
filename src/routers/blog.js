@@ -50,7 +50,7 @@ router.get('/', async (request, response) => {
 
 	const localeString = reqLocale.toString();
 
-	response.render('blog', {
+	response.render('blog/blog', {
 		layout: 'main',
 		locale,
 		localeString,
@@ -70,7 +70,7 @@ router.get('/feed.xml', async (request, response) => {
 	});
 
 	response.set('Content-Type', 'application/rss+xml');
-	response.render('blog-rss', {
+	response.render('blog/blog-rss', {
 		layout: false,
 		posts
 	});
@@ -111,7 +111,7 @@ router.get('/:slug', async (request, response, next) => {
 	// Convert the content into HTML
 	const htmlPost = marked(content);
 
-	response.render('blogpost', {
+	response.render('blog/blogpost', {
 		layout: 'blog-opengraph',
 		locale,
 		localeString,

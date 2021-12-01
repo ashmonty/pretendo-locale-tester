@@ -14,6 +14,7 @@ const app = express();
 
 logger.info('Setting up Middleware');
 app.use(morgan('dev'));
+app.use(express.urlencoded({ extended: true }));
 
 logger.info('Setting up static public folder');
 app.use(express.static('public'));
@@ -23,6 +24,7 @@ const routers = {
 	home: require('./routers/home'),
 	faq: require('./routers/faq'),
 	progress: require('./routers/progress'),
+	account: require('./routers/account'),
 	blog: require('./routers/blog'),
 	localization: require('./routers/localization')
 };
@@ -31,13 +33,45 @@ app.use(cookieParser());
 
 // Locale express middleware setup
 app.use(expressLocale({
-	'priority': ['default'],
+	'priority': ['cookie', 'accept-language', 'map', 'default'],
+	cookie: { name: 'preferredLocale' },
+	// Map unavailable regions to available locales from the same language
+	map: {
+		/* TODO: map more regions to the available locales */
+		en: 'en-US', 'en-GB': 'en-US', 'en-AU': 'en-US', 'en-CA': 'en-US',
+		ar: 'ar-AR',
+		de: 'de-DE',
+		nl: 'nl-NL',
+		es: 'es-ES',
+		fr: 'fr-FR', 'fr-CA': 'fr-FR', 'fr-CH': 'fr-FR',
+		it: 'it-IT', 'it-CH': 'it-IT',
+		ko: 'ko-KR',
+		pt: 'pt-BR',
+		ro: 'ro-RO',
+		ru: 'ru-RU',
+		tr: 'tr-TR'
+	},
+	allowed: [
+		'en', 'en-US', 'en-GB', 'en-AU', 'en-CA',
+		'ar', 'ar-AR',
+		'de', 'de-DE',
+		'nl', 'nl-NL',
+		'es', 'es-ES',
+		'fr', 'fr-FR', 'fr-CA', 'fr-CH',
+		'it', 'it-IT', 'it-CH',
+		'ko', 'ko-KR',
+		'pt', 'pt-BR',
+		'ro', 'ro-RO',
+		'ru', 'ru-RU',
+		'tr', 'tr-TR',
+	],
 	'default': 'en-US'
 }));
 
 app.use('/', routers.home);
 app.use('/faq', routers.faq);
 app.use('/progress', routers.progress);
+app.use('/account', routers.account);
 app.use('/localization', routers.localization);
 app.use('/blog', routers.blog);
 
@@ -74,6 +108,12 @@ app.engine('handlebars', handlebars({
 				${htmlRight}
 			</div>
 			`;
+		},
+		eq(value1, value2) {
+			return value1 === value2;
+		},
+		neq(value1, value2) {
+			return value1 !== value2;
 		}
 	}
 }));
