@@ -1,6 +1,10 @@
 const Trello = require('trello');
 const got = require('got');
-const config = require('../config.json');
+try {
+	const config = require('../config.json');
+} catch (e) {
+	console.log('wow this sure is janky huh');
+}
 
 const trello = new Trello(
 	process.env.TRELLOKEY || config.trello.api_key,

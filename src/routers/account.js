@@ -2,7 +2,11 @@ const { Router } = require('express');
 const crypto = require('crypto');
 const DiscordOauth2 = require('discord-oauth2');
 const util = require('../util');
-const config = require('../../config.json');
+try {
+	const config = require('../config.json');
+} catch (e) {
+	console.log('wow this sure is janky huh');
+}
 const router = new Router();
 
 // Create OAuth client
