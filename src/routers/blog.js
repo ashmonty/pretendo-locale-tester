@@ -1,10 +1,9 @@
-/* eslint-disable no-const-assign */
-/* eslint-disable prefer-const */
 const { Router } = require('express');
 const util = require('../util');
 const logger = require('../logger');
 const router = new Router();
 
+//localetester
 const { fetchLocaleFile } = require('../fetchlocalefile');
 
 const fs = require('fs');
@@ -43,7 +42,7 @@ router.get('/', async (request, response) => {
 
 	const reqLocale = request.locale;
 	let locale = util.getLocale(reqLocale.region, reqLocale.language);
-
+	//localetester
 	if (request.query.url) {
 		locale = await fetchLocaleFile(request.query.url);
 	}
@@ -80,7 +79,7 @@ router.get('/:slug', async (request, response, next) => {
 
 	const reqLocale = request.locale;
 	let locale = util.getLocale(reqLocale.region, reqLocale.language);
-
+	//localetester
 	if (request.query.url) {
 		locale = await fetchLocaleFile(request.query.url);
 	}

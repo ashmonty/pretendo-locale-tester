@@ -4,19 +4,23 @@ const DiscordOauth2 = require('discord-oauth2');
 const { v4: uuidv4 } = require('uuid');
 const AdmZip = require('adm-zip');
 const util = require('../util');
+let config;
 try {
-	const config = require('../config.json');
+	config = require('../config.json');
 } catch (e) {
 	console.log('wow this sure is janky huh');
 }
 const router = new Router();
-const aesKey = Buffer.from(config.aes_key, 'hex');
+const aesKey = 'placeholder';
+
+//localetester
+const { fetchLocaleFile } = require('../fetchlocalefile');
 
 // Create OAuth client
 const discordOAuth = new DiscordOauth2({
-	clientId: process.env.DISCORDCLIENTID || config.discord.client_id,
-	clientSecret: process.env.DISCORDCLIENTSECRET || config.discord.client_secret,
-	redirectUri: process.env.BASEURL || `${config.http.base_url}/account/connect/discord`,
+	clientId: process.env.DISCORDCLIENTID || config?.discord.client_id,
+	clientSecret: process.env.DISCORDCLIENTSECRET || config?.discord.client_secret,
+	redirectUri: process.env.BASEURL || `${config?.http.base_url}/account/connect/discord`,
 	version: 'v9'
 });
 
@@ -26,13 +30,21 @@ router.get('/', async (request, response) => {
 		return response.redirect('/account/login');
 	}
 
+	//localetester
+	const reqLocale = request.locale;
+	let locale = util.getLocale(reqLocale.region, reqLocale.language);
+	if (request.query.url) {
+		locale = await fetchLocaleFile(request.query.url);
+	}
+
 	// Setup the data to be sent to the handlebars renderer
 	const renderData = {
 		layout: 'main',
-		locale: util.getLocale(request.locale.region, request.locale.language),
+		locale,
 		localeString: request.locale.toString(),
 		linked: request.cookies.linked,
-		error: request.cookies.error
+		error: request.cookies.error,
+		queryUrl: request.query.url
 	};
 
 	// Reset message cookies
@@ -159,15 +171,15 @@ router.get('/', async (request, response) => {
 		// Get the users Discord roles to check if they are a tester
 		const { roles } = await discordOAuth.getMemberRolesForGuild({
 			userId: account.connections.discord.id,
-			guildId: process.env.DISCORDGUILDID || config.discord.guild_id,
-			botToken: process.env.DISCORDBOTTOKEN || config.discord.bot_token
+			guildId: process.env.DISCORDGUILDID || config?.discord.guild_id,
+			botToken: process.env.DISCORDBOTTOKEN || config?.discord.bot_token
 		});
 
 		// Only run this check if not already a tester (edge case)
 		if (!renderData.isTester) {
 			// 409116477212459008 = Developer
 			// 882247322933801030 = Super Mario (Patreon tier)
-			renderData.isTester = roles.some(role => (JSON.parse(process.env.DISCORDTESTERROLES) || config.discord.tester_roles).includes(role));
+			renderData.isTester = roles.some(role => (JSON.parse(process.env.DISCORDTESTERROLES) || config?.discord.tester_roles).includes(role));
 		}
 	} else {
 		// If no Discord account linked, generate an auth URL
@@ -183,11 +195,20 @@ router.get('/', async (request, response) => {
 });
 
 router.get('/login', async (request, response) => {
+
+	//localetester
+	const reqLocale = request.locale;
+	let locale = util.getLocale(reqLocale.region, reqLocale.language);
+	if (request.query.url) {
+		locale = await fetchLocaleFile(request.query.url);
+	}
+
 	const renderData = {
 		layout: 'main',
-		locale: util.getLocale(request.locale.region, request.locale.language),
-		localeString: request.locale.toString(),
-		error: request.cookies.error
+		locale,
+		localeString: reqLocale.toString(),
+		error: request.cookies.error,
+		queryUrl: request.query.url
 	};
 
 	response.clearCookie('error', { domain: '.pretendo.network' });
@@ -235,14 +256,23 @@ router.post('/login', async (request, response) => {
 });
 
 router.get('/register', async (request, response) => {
+
+	//localetester
+	const reqLocale = request.locale;
+	let locale = util.getLocale(reqLocale.region, reqLocale.language);
+	if (request.query.url) {
+		locale = await fetchLocaleFile(request.query.url);
+	}
+
 	const renderData = {
 		layout: 'main',
-		locale: util.getLocale(request.locale.region, request.locale.language),
+		locale,
 		localeString: request.locale.toString(),
 		error: request.cookies.error,
 		email: request.cookies.email,
 		username: request.cookies.username,
 		mii_name: request.cookies.mii_name,
+		queryUrl: request.query.url
 	};
 
 	response.clearCookie('error', { domain: '.pretendo.network' });
@@ -443,7 +473,12 @@ router.get('/online-files', async (request, response) => {
 router.get('/miieditor', async (request, response) => {
 
 	const reqLocale = request.locale;
-	const locale = util.getLocale(reqLocale.region, reqLocale.language);
+	let locale = util.getLocale(reqLocale.region, reqLocale.language);
+
+	//localetester
+	if (request.query.url) {
+		locale = await fetchLocaleFile(request.query.url);
+	}
 
 	// Should obviously be the user's
 	const encodedUserMiiData = 'AwAAQOlVognnx0GC2X0LLQOzuI0n2QAAAUBiAGUAbABsAGEAAABFAAAAAAAAAEBAEgCBAQRoQxggNEYUgRIXaA0AACkDUkhQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP6G';
@@ -494,7 +529,8 @@ router.get('/miieditor', async (request, response) => {
 		locale,
 		localeString: reqLocale.toString(),
 		encodedUserMiiData,
-		editorToHex
+		editorToHex,
+		queryUrl: request.query.url
 	});
 });
 

@@ -1,30 +1,32 @@
-const { Router } = require("express");
-const util = require("../util");
-
-const { fetchLocaleFile } = require("../fetchlocalefile");
-const { boards } = require("../../boards/boards.json");
+const { Router } = require('express');
+const util = require('../util');
+const { boards } = require('../../boards/boards.json');
 const router = new Router();
 
-const { getTrelloCache } = require("../trello");
+//localetester
+const { fetchLocaleFile } = require('../fetchlocalefile');
 
-router.get("/", async (request, response) => {
-  const reqLocale = request.locale;
-  let locale = util.getLocale(reqLocale.region, reqLocale.language);
+const { getTrelloCache } = require('../trello');
 
-  if (request.query.url) {
-    locale = await fetchLocaleFile(request.query.url);
-  }
+router.get('/', async (request, response) => {
 
-  const cache = await getTrelloCache();
+	const reqLocale = request.locale;
+	let locale = util.getLocale(reqLocale.region, reqLocale.language);
+	//localetester
+	if (request.query.url) {
+		locale = await fetchLocaleFile(request.query.url);
+	}
 
-  response.render("progress", {
-    layout: "main",
-    boards,
-    locale,
-    localeString: reqLocale.toString(),
-    progressLists: cache,
-    queryUrl: request.query.url,
-  });
+	const cache = await getTrelloCache();
+
+	response.render('progress', {
+		layout: 'main',
+		boards,
+		locale,
+		localeString: reqLocale.toString(),
+		progressLists: cache,
+		queryUrl: request.query.url
+	});
 });
 
 module.exports = router;

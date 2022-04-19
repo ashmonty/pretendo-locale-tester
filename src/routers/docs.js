@@ -2,6 +2,9 @@ const { Router } = require('express');
 const util = require('../util');
 const router = new Router();
 
+//localetester
+const { fetchLocaleFile } = require('../fetchlocalefile');
+
 const fs = require('fs');
 const path = require('path');
 const { marked } = require('marked');
@@ -12,7 +15,11 @@ router.get('/', async (request, response) => {
 
 router.get('/search', async (request, response) => {
 	const reqLocale = request.locale;
-	const locale = util.getLocale(reqLocale.region, reqLocale.language);
+	let locale = util.getLocale(reqLocale.region, reqLocale.language);
+	//localetester
+	if (request.query.url) {
+		locale = await fetchLocaleFile(request.query.url);
+	}
 
 	const localeString = reqLocale.toString();
 
@@ -26,7 +33,11 @@ router.get('/search', async (request, response) => {
 
 router.get('/:slug', async (request, response, next) => {
 	const reqLocale = request.locale;
-	const locale = util.getLocale(reqLocale.region, reqLocale.language);
+	let locale = util.getLocale(reqLocale.region, reqLocale.language);
+	//localetester
+	if (request.query.url) {
+		locale = await fetchLocaleFile(request.query.url);
+	}
 
 	const localeString = reqLocale.toString();
 
@@ -71,7 +82,8 @@ router.get('/:slug', async (request, response, next) => {
 		content,
 		currentPage: request.params.slug,
 		missingInLocale,
-		showQuickLinks
+		showQuickLinks,
+		queryUrl: request.query.url
 	});
 });
 

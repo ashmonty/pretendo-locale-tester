@@ -1,14 +1,15 @@
-const Trello = require('trello');
+const Trello =require('trello');
 const got = require('got');
+let config;
 try {
-	const config = require('../config.json');
+	config = require('../config.json');
 } catch (e) {
 	console.log('wow this sure is janky huh');
 }
 
 const trello = new Trello(
-	process.env.TRELLOKEY || config.trello.api_key,
-	process.env.TRELLOTOKEN || config.trello.api_token
+	process.env.TRELLOKEY || config?.trello.api_key,
+	process.env.TRELLOTOKEN || config?.trello.api_token
 );
 let cache;
 
@@ -17,7 +18,7 @@ async function getTrelloCache() {
 	if (!available) {
 		return {
 			update_time: Date.now(),
-			sections: [],
+			sections: []
 		};
 	}
 
@@ -25,7 +26,7 @@ async function getTrelloCache() {
 		cache = await updateTrelloCache();
 	}
 
-	if (cache.update_time < Date.now() - 1000 * 60 * 60) {
+	if (cache.update_time < Date.now() - (1000 * 60 * 60)) {
 		cache = await updateTrelloCache();
 	}
 
@@ -35,7 +36,7 @@ async function getTrelloCache() {
 async function updateTrelloCache() {
 	const progressData = {
 		update_time: Date.now(),
-		sections: [],
+		sections: []
 	};
 
 	const boards = await trello.getOrgBoards('pretendo1');
@@ -48,8 +49,8 @@ async function updateTrelloCache() {
 			progress: {
 				not_started: [],
 				started: [],
-				completed: [],
-			},
+				completed: []
+			}
 		};
 
 		meta.title = board.name;
@@ -67,11 +68,7 @@ async function updateTrelloCache() {
 			}
 		}
 
-		if (
-			meta.progress.not_started.length !== 0 ||
-      meta.progress.started.length !== 0 ||
-      meta.progress.completed.length !== 0
-		) {
+		if (meta.progress.not_started.length !== 0 || meta.progress.started.length !== 0 || meta.progress.completed.length !== 0) {
 			progressData.sections.push(meta);
 		}
 	}
@@ -80,13 +77,11 @@ async function updateTrelloCache() {
 }
 
 async function trelloAPIAvailable() {
-	const { status } = await got(
-		'https://trello.status.atlassian.com/api/v2/status.json'
-	).json();
+	const { status } = await got('https://trello.status.atlassian.com/api/v2/status.json').json();
 	return status.description === 'All Systems Operational';
 }
 
 module.exports = {
 	getTrelloCache,
-	updateTrelloCache,
+	updateTrelloCache
 };

@@ -1,9 +1,10 @@
 const { Router } = require('express');
 const util = require('../util');
-
-const { fetchLocaleFile } = require('../fetchlocalefile');
 const { boards } = require('../../boards/boards.json');
 const router = new Router();
+
+//localetester
+const { fetchLocaleFile } = require('../fetchlocalefile');
 
 const { getTrelloCache } = require('../trello');
 
@@ -11,11 +12,11 @@ router.get('/', async (request, response) => {
 
 	const reqLocale = request.locale;
 	let locale = util.getLocale(reqLocale.region, reqLocale.language);
-
+	//localetester
 	if (request.query.url) {
 		locale = await fetchLocaleFile(request.query.url);
 	}
-
+	
 	const cache = await getTrelloCache();
 
 	// Builds the arrays of people for the special thanks section
@@ -46,8 +47,8 @@ router.get('/', async (request, response) => {
 		boards,
 		locale,
 		localeString: reqLocale.toString(),
-		queryUrl: request.query.url,
-		specialThanksPeople
+		specialThanksPeople,
+		queryUrl: request.query.url
 	});
 });
 

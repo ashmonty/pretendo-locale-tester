@@ -25,16 +25,16 @@
 	</a>
 
 	<nav>
-		<a href="/#about">{{ localeHelper locale "nav" "about" }}</a>
-		<a href="/#faq">{{ localeHelper locale "nav" "faq" }}</a>
-		<a href="/#credits">{{ localeHelper locale "nav" "credits" }}</a>
-		<a style="display: none;" href="/docs">{{ localeHelper locale "nav" "docs"}}</a>
-		<a href="/progress" class="keep-on-mobile">{{ localeHelper locale "nav" "progress"}}</a>
-		<a href="/blog" class="keep-on-mobile">{{ localeHelper locale "nav" "blog" }}</a>
+		<a href="/?url={{queryUrl}}#about">{{ localeHelper locale "nav" "about" }}</a>
+		<a href="/?url={{queryUrl}}#faq">{{ localeHelper locale "nav" "faq" }}</a>
+		<a href="/?url={{queryUrl}}#credits">{{ localeHelper locale "nav" "credits" }}</a>
+		<a style="display: none;" href="docs?url={{queryUrl}}">{{ localeHelper locale "nav" "docs"}}</a>
+		<a href="/progress?url={{queryUrl}}" class="keep-on-mobile">{{ localeHelper locale "nav" "progress"}}</a>
+		<a href="/blog?url={{queryUrl}}" class="keep-on-mobile">{{ localeHelper locale "nav" "blog" }}</a>
 	</nav>
 
 	<!-- Ordered the locales in the same way Google orders them -->
-	<div class="select-box locale-dropdown" data-dropdown>
+	<div class="select-box locale-dropdown" data-dropdown style="display: none;">
 		<div class="options-container">
 			<div class="option">
 				<input type="radio" class="radio" id="en-US" name="category" />
