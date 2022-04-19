@@ -9,7 +9,7 @@ const { fetchLocaleFile } = require('../fetchlocalefile');
 
 const fs = require('fs');
 const path = require('path');
-const marked = require('marked');
+const { marked } = require('marked');
 const matter = require('gray-matter');
 
 const postList = () => {
@@ -109,7 +109,7 @@ router.get('/:slug', async (request, response, next) => {
 		.replace(/(?<=<iframe src="https:\/\/www\.youtube-nocookie\.com\/embed\/.{11})\)/g, '" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>');
 
 	// Convert the content into HTML
-	const htmlPost = marked(content);
+	const htmlPost = marked.parse(content);
 
 	response.render('blog/blogpost', {
 		layout: 'blog-opengraph',

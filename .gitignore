@@ -54,6 +54,9 @@ typings/
 # Yarn Integrity file
 .yarn-integrity
 
+# vscode settings
+.vscode
+
 # dotenv environment variables file
 .env
 
@@ -61,3 +64,6 @@ typings/
 config.json
 static-text.json
 .DS_Store
+
+# keep browserified files out
+*.bundled.js

@@ -1,5 +1,5 @@
 <header>
-	<a href="/?url={{queryUrl}}" class="logo-link">
+	<a href="/" class="logo-link">
 		<svg xmlns="http://www.w3.org/2000/svg" width="120" height="39.876">
 			<g id="logo_type" data-name="logo type" transform="translate(-553 -467)">
 				<g id="logo" transform="translate(553 467)">
@@ -25,14 +25,15 @@
 	</a>
 
 	<nav>
-		<a href="/?url={{queryUrl}}#about">{{ locale.nav.about }}</a>
-		<a href="/?url={{queryUrl}}#faq">{{ locale.nav.faq }}</a>
-		<a href="/?url={{queryUrl}}#credits">{{ locale.nav.credits }}</a>
-		<a href="/progress?url={{queryUrl}}" class="keep-on-mobile">{{ locale.nav.progress }}</a>
-		<a href="/blog?url={{queryUrl}}" class="keep-on-mobile">{{ locale.nav.blog }}</a>
+		<a href="/#about">{{ localeHelper locale "nav" "about" }}</a>
+		<a href="/#faq">{{ localeHelper locale "nav" "faq" }}</a>
+		<a href="/#credits">{{ localeHelper locale "nav" "credits" }}</a>
+		<a style="display: none;" href="/docs">{{ localeHelper locale "nav" "docs"}}</a>
+		<a href="/progress" class="keep-on-mobile">{{ localeHelper locale "nav" "progress"}}</a>
+		<a href="/blog" class="keep-on-mobile">{{ localeHelper locale "nav" "blog" }}</a>
 	</nav>
 
-	<!-- Ordered the locales in the same way YouTube's language selector orders them -->
+	<!-- Ordered the locales in the same way Google orders them -->
 	<div class="select-box locale-dropdown" data-dropdown>
 		<div class="options-container">
 			<div class="option">
@@ -45,12 +46,6 @@
 				<input type="radio" class="radio" id="de-DE" name="category" />
 				<label for="de-DE">
 					<div class="item"><span class="lang">🇩🇪</span><span class="locale-names">Deutsch</span></div>
-				</label>
-			</div>
-			<div class="option">
-				<input type="radio" class="radio" id="nl-NL" name="category" />
-				<label for="nl-NL">
-					<div class="item"><span class="lang">🇳🇱</span><span class="locale-names">Nederlands</span></div>
 				</label>
 			</div>
 			<div class="option">
@@ -69,6 +64,24 @@
 				<input type="radio" class="radio" id="it-IT" name="category" />
 				<label for="it-IT">
 					<div class="item"><span class="lang">🇮🇹</span><span class="locale-names">Italiano</span></div>
+				</label>
+			</div>
+			<div class="option">
+				<input type="radio" class="radio" id="nl-NL" name="category" />
+				<label for="nl-NL">
+					<div class="item"><span class="lang">🇳🇱</span><span class="locale-names">Nederlands</span></div>
+				</label>
+			</div>
+			<div class="option">
+				<input type="radio" class="radio" id="nb-NO" name="category" />
+				<label for="nb-NO">
+					<div class="item"><span class="lang">🇳🇴</span><span class="locale-names">Norsk</span></div>
+				</label>
+			</div>
+      <div class="option">
+				<input type="radio" class="radio" id="pl-PL" name="category" />
+				<label for="pl-PL">
+					<div class="item"><span class="lang">🇵🇱</span><span class="locale-names">Polski</span></div>
 				</label>
 			</div>
 			<div class="option">
@@ -102,6 +115,11 @@
 				</label>
 			</div>
 			<div class="option">
+				<input type="radio" class="radio" id="ja-JP" name="category" />
+				<label for="ja-JP">
+					<div class="item"><span class="lang">🇯🇵</span><span class="locale-names">日本語</span></div>
+			</div>
+			<div class="option">
 				<input type="radio" class="radio" id="ko-KR" name="category" />
 				<label for="ko-KR">
 					<div class="item"><span class="lang">🇰🇷</span><span class="locale-names">한국어</span></div>
@@ -112,5 +130,4 @@
 			<div class="item"><span class="lang"></span></div>
 		</div>
 	</div>
-
 </header>

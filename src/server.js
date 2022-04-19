@@ -8,7 +8,9 @@ const cookieParser = require('cookie-parser');
 const logger = require('./logger');
 const util = require('./util');
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
+
+const defaultLocale = require('../locales/US_en.json');
 
 const app = express();
 
@@ -23,10 +25,12 @@ logger.info('Importing page routers');
 const routers = {
 	home: require('./routers/home'),
 	faq: require('./routers/faq'),
+	docs: require('./routers/docs'),
 	progress: require('./routers/progress'),
 	account: require('./routers/account'),
 	blog: require('./routers/blog'),
-	localization: require('./routers/localization')
+	localization: require('./routers/localization'),
+	aprilfools: require('./routers/aprilfools')
 };
 
 app.use(cookieParser());
@@ -45,7 +49,11 @@ app.use(expressLocale({
 		es: 'es-ES',
 		fr: 'fr-FR', 'fr-CA': 'fr-FR', 'fr-CH': 'fr-FR',
 		it: 'it-IT', 'it-CH': 'it-IT',
+		ja: 'ja-JP',
 		ko: 'ko-KR',
+		nb: 'nb-NO',
+		no: 'nb-NO',
+		pl: 'pl-PL',
 		pt: 'pt-BR',
 		ro: 'ro-RO',
 		ru: 'ru-RU',
@@ -59,7 +67,10 @@ app.use(expressLocale({
 		'es', 'es-ES',
 		'fr', 'fr-FR', 'fr-CA', 'fr-CH',
 		'it', 'it-IT', 'it-CH',
+		'ja', 'ja-JP',
 		'ko', 'ko-KR',
+		'nb', 'no', 'nb-NO',
+		'pl', 'pl-PL',
 		'pt', 'pt-BR',
 		'ro', 'ro-RO',
 		'ru', 'ru-RU',
@@ -70,10 +81,12 @@ app.use(expressLocale({
 
 app.use('/', routers.home);
 app.use('/faq', routers.faq);
+app.use('/docs', routers.docs);
 app.use('/progress', routers.progress);
 app.use('/account', routers.account);
 app.use('/localization', routers.localization);
 app.use('/blog', routers.blog);
+app.use('/nso-legacy-pack', routers.aprilfools);
 
 logger.info('Creating 404 status handler');
 // This works because it is the last router created
@@ -114,6 +127,29 @@ app.engine('handlebars', handlebars({
 		},
 		neq(value1, value2) {
 			return value1 !== value2;
+		},
+		localeHelper(...args) {
+			let userLocaleString = args[0];
+
+			/*
+			 *	Removes the first and the last argument, and then loops through the rest to
+			 *	get the string in the user's locale. If not available, it will return it in
+			 *	the default locale.
+			 */
+			
+			args.slice(1, -1).forEach(arg => {
+				userLocaleString = userLocaleString?.[arg];
+			});
+
+			if (!userLocaleString) {
+				let defaultLocaleString = defaultLocale;
+				args.slice(1, -1).forEach(arg => {
+					defaultLocaleString = defaultLocaleString?.[arg];
+				});
+				return defaultLocaleString;
+			} else {
+				return userLocaleString;
+			}
 		}
 	}
 }));
